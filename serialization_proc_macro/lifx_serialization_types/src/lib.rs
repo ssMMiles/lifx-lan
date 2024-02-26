@@ -1,6 +1,3 @@
-mod header;
-pub use header::LifxHeader;
-
 #[derive(thiserror::Error, Debug)]
 pub enum LifxDeserializationError {
     #[error("Invalid packet number")]

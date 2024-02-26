@@ -73,9 +73,9 @@ impl LifxHeader {
         buf[34..36].copy_from_slice(&self._reserved_4);
     }
 
-    pub fn from_bytes(bytes: &[u8]) -> Result<Self, crate::LifxDeserializationError> {
+    pub fn from_bytes(bytes: &[u8]) -> Result<Self, lifx_serialization::LifxDeserializationError> {
         if bytes.len() < 36 {
-            return Err(crate::LifxDeserializationError::InvalidPacketSize);
+            return Err(lifx_serialization::LifxDeserializationError::InvalidPacketSize);
         }
 
         Ok(LifxHeader {

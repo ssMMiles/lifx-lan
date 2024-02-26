@@ -1,12 +1,17 @@
 #![no_std]
 
-use lifx_serialization::{LifxHeader, LifxPayload};
-use request_options::LifxRequestOptions;
 extern crate heapless;
 extern crate lifx_serialization;
 
-pub mod messages;
+use lifx_serialization::{LifxDeserializationError, LifxPayload};
+
+pub use header::LifxHeader;
+pub use request_options::LifxRequestOptions;
+pub use messages::Message;
+
+pub mod header;
 pub mod request_options;
+pub mod messages;
 
 pub fn serialize_lifx_packet(request_options: &LifxRequestOptions, payload: &messages::Message, buffer: &mut [u8]) {
     let packet_number = payload.packet_number();
@@ -48,8 +53,8 @@ pub fn serialize_lifx_packet(request_options: &LifxRequestOptions, payload: &mes
     payload.to_bytes(&mut buffer[36..]);
 }
 
-pub fn deserialize_lifx_packet(bytes: &[u8]) -> Result<(lifx_serialization::LifxHeader, messages::Message), lifx_serialization::LifxDeserializationError> {
-    let header = lifx_serialization::LifxHeader::from_bytes(&bytes[0..36])?;
+pub fn deserialize_lifx_packet(bytes: &[u8]) -> Result<(LifxHeader, messages::Message), LifxDeserializationError> {
+    let header = LifxHeader::from_bytes(&bytes[0..36])?;
     let payload = messages::Message::from_bytes(header.packet_number, &bytes[36..])?;
 
     Ok((header, payload))

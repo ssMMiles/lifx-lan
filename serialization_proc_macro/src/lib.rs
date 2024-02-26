@@ -1,4 +1,4 @@
-pub use lifx_serialization_types::{LifxPayload, LifxDeserializationError, LifxHeader};
+pub use lifx_serialization_types::{LifxPayload, LifxDeserializationError};
 pub use lifx_serialization_macro::LifxPayload;
 
 pub fn deserialize_string(bytes: &[u8]) -> Result<heapless::String<32>, LifxDeserializationError> {

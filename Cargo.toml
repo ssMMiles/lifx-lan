@@ -9,4 +9,4 @@ path = "src/lib.rs"
 
 heapless = "0.8.0"
 libm = "0.2.8"
-lifx_serialization = { path = "./lifx-serialization" }
+lifx_serialization = { path = "./serialization_proc_macro" }
