@@ -1,0 +1,9 @@
+[package]
+name = "lifx_serialization"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+lifx_serialization_types = { path = "./lifx_serialization_types" }
+lifx_serialization_macro = { path = "./lifx_serialization_macro" }
+heapless = "0.8.0"
