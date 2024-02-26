@@ -240,8 +240,10 @@ pub fn from_bytes_derive(input: TokenStream) -> TokenStream {
 
                         #( #field_serialization )*
 
-                        buffer.copy_from_slice(&bytes);
-                        bytes.len()
+                        let size = bytes.len();
+                        buffer[..size].copy_from_slice(&bytes);
+                        
+                        size
                     }
                 }
             },
