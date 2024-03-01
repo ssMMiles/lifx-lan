@@ -1,7 +1,3 @@
-extern crate proc_macro;
-extern crate alloc;
-
-use alloc::string::ToString;
 use proc_macro::TokenStream;
 use quote::quote;
 

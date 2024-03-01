@@ -1,6 +1,6 @@
-#![no_std]
-
+#[cfg(feature = "no-std")]
 extern crate heapless;
+
 extern crate lifx_serialization;
 
 use lifx_serialization::{LifxDeserializationError, LifxPayload};

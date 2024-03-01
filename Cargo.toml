@@ -6,7 +6,11 @@ path = "src/lib.rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-
-heapless = "0.8.0"
 libm = "0.2.8"
+heapless = { version = "0.8.0", optional = true }
+
 lifx_serialization = { path = "./serialization_proc_macro" }
+
+[features]
+default = []
+no-std = ["heapless", "lifx_serialization/no-std"]

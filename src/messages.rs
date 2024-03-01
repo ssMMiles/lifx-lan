@@ -1,4 +1,6 @@
+#[cfg(feature = "no-std")]
 use heapless::String;
+
 use lifx_serialization::LifxPayload;
 
 #[derive(LifxPayload, Debug, Clone)]
@@ -35,7 +37,10 @@ pub enum Message {
     },
     #[packet_number(25)]
     Label {
+        #[cfg(feature = "no-std")]
         label: String<32>,
+        #[cfg(not(feature = "no-std"))]
+        label: String,
     },
     #[packet_number(33)]
     Version {
@@ -52,13 +57,19 @@ pub enum Message {
     #[packet_number(50)]
     Location {
         location: [u8; 16],
+        #[cfg(feature = "no-std")]
         label: String<32>,
+        #[cfg(not(feature = "no-std"))]
+        label: String,
         updated_at: u64,
     },
     #[packet_number(53)]
     Group {
         group: [u8; 16],
+        #[cfg(feature = "no-std")]
         label: String<32>,
+        #[cfg(not(feature = "no-std"))]
+        label: String,
         updated_at: u64,
     },
     #[packet_number(59)]
@@ -77,7 +88,10 @@ pub enum Message {
         kelvin: u16,
         reserved_6: [u8; 2],
         power: u16,
+        #[cfg(feature = "no-std")]
         label: String<32>,
+        #[cfg(not(feature = "no-std"))]
+        label: String,
         reserved_7: [u8; 8],
     },
     #[packet_number(118)]
@@ -121,7 +135,10 @@ pub enum Message {
     GetLabel,
     #[packet_number(24)]
     SetLabel {
+        #[cfg(feature = "no-std")]
         label: String<32>,
+        #[cfg(not(feature = "no-std"))]
+        label: String,
     },
     #[packet_number(32)]
     GetVersion,
@@ -134,7 +151,10 @@ pub enum Message {
     #[packet_number(49)]
     SetLocation {
         location: [u8; 16],
+        #[cfg(feature = "no-std")]
         label: String<32>,
+        #[cfg(not(feature = "no-std"))]
+        label: String,
         updated_at: u64,
     },
     #[packet_number(51)]
@@ -142,7 +162,10 @@ pub enum Message {
     #[packet_number(52)]
     SetGroup {
         group: [u8; 16],
+        #[cfg(feature = "no-std")]
         label: String<32>,
+        #[cfg(not(feature = "no-std"))]
+        label: String,
         updated_at: u64,
     },
     #[packet_number(58)]

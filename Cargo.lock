@@ -55,7 +55,6 @@ dependencies = [
 name = "lifx_serialization_macro"
 version = "0.1.0"
 dependencies = [
- "heapless",
  "lifx_serialization_types",
  "proc-macro2",
  "quote",
