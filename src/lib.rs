@@ -27,7 +27,6 @@ pub fn serialize_lifx_packet(request_options: &LifxRequestOptions, payload: &mes
         flags_and_reserved_2 |= 0b10000000;
     }
 
-
     let header = LifxHeader {
         size: 36 + payload_size as u16,
 

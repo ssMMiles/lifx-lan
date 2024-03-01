@@ -1,3 +1,3 @@
-Low level library for working with the LIFX LAN protocol. Work in progress.
+# lifx-lan
 
-TODO: docs
+This crate provides a low level interface to the LIFX LAN protocol.
