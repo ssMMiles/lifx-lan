@@ -1,4 +1,5 @@
 // See https://lan.developer.lifx.com/docs/packet-contents for more details
+#[derive(Debug, Clone)]
 pub struct LifxRequestOptions {
     /*
         The tagged field is a boolean flag that indicates whether the Frame Address target field is being used to address an

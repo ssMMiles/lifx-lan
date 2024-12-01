@@ -5,10 +5,19 @@ use lifx_serialization::LifxPayload;
 
 #[derive(LifxPayload, Debug, Clone)]
 pub enum Message {
+    #[packet_number(1)]
+    Service { service: u8, port: u32 },
+    // technically same as above, but new version?
     #[packet_number(3)]
-    Service {
-        service: u8,
-        port: u32,
+    StateService { service: u8, port: u32 },
+    #[packet_number(12)]
+    GetMeshInfo {},
+    #[packet_number(13)]
+    MeshInfo {
+        signal: f32,
+        tx: u32,
+        rx: u32,
+        mcu_temperature: u16,
     },
     #[packet_number(15)]
     HostFirmware {
@@ -20,9 +29,9 @@ pub enum Message {
     #[packet_number(17)]
     WifiInfo {
         signal: f32,
-        reserved_6: [u8; 4],
-        reserved_7: [u8; 4],
-        reserved_8: [u8; 2],
+        tx: u32,
+        rx: u32,
+        mcu_temperature: u16,
     },
     #[packet_number(19)]
     WifiFirmware {
@@ -32,9 +41,7 @@ pub enum Message {
         version_major: u16,
     },
     #[packet_number(22)]
-    Power {
-        level: u16,
-    },
+    Power { level: u16 },
     #[packet_number(25)]
     Label {
         #[cfg(feature = "no-std")]
@@ -73,13 +80,9 @@ pub enum Message {
         updated_at: u64,
     },
     #[packet_number(59)]
-    EchoResponse {
-        echoing: [u8; 64],
-    },
+    EchoResponse { echoing: [u8; 64] },
     #[packet_number(223)]
-    Unhandled {
-        unhandled_type: u16,
-    },
+    Unhandled { unhandled_type: u16 },
     #[packet_number(107)]
     LightState {
         hue: u16,
@@ -95,13 +98,9 @@ pub enum Message {
         reserved_7: [u8; 8],
     },
     #[packet_number(118)]
-    LightPower {
-        level: u16,
-    },
+    LightPower { level: u16 },
     #[packet_number(121)]
-    Infrared {
-        brightness: u16,
-    },
+    Infrared { brightness: u16 },
     #[packet_number(144)]
     HevCycle {
         duration_s: u32,
@@ -109,17 +108,12 @@ pub enum Message {
         last_power: u8,
     },
     #[packet_number(147)]
-    HevCycleConfig {
-        indication: u8,
-        duration_s: u32,
-    },
+    HevCycleConfig { indication: u8, duration_s: u32 },
     #[packet_number(149)]
-    LastHevCycleResult {
-        result: u8,
-    },
+    LastHevCycleResult { result: u8 },
     #[packet_number(2)]
     GetService,
-    #[packet_number(14)]    
+    #[packet_number(14)]
     GetHostFirmware,
     #[packet_number(16)]
     GetWifiInfo,
@@ -128,9 +122,7 @@ pub enum Message {
     #[packet_number(20)]
     GetPower,
     #[packet_number(21)]
-    SetPower {
-        level: u16,
-    },
+    SetPower { level: u16 },
     #[packet_number(23)]
     GetLabel,
     #[packet_number(24)]
@@ -169,9 +161,7 @@ pub enum Message {
         updated_at: u64,
     },
     #[packet_number(58)]
-    EchoRequest {
-        echoing: [u8; 64],
-    },
+    EchoRequest { echoing: [u8; 64] },
     #[packet_number(101)]
     GetColor,
     #[packet_number(102)]
@@ -199,10 +189,7 @@ pub enum Message {
     #[packet_number(116)]
     GetLightPower,
     #[packet_number(117)]
-    SetLightPower {
-        level: u16,
-        duration_ms: u32,
-    },
+    SetLightPower { level: u16, duration_ms: u32 },
     #[packet_number(119)]
     SetWaveformOptional {
         reserved_6: u8,
@@ -223,25 +210,54 @@ pub enum Message {
     #[packet_number(120)]
     GetInfrared,
     #[packet_number(122)]
-    SetInfrared {
-        brightness: u16,
-    },
+    SetInfrared { brightness: u16 },
     #[packet_number(142)]
     GetHevCycle,
     #[packet_number(143)]
-    SetHevCycle {
-        duration_s: u32,
-    },
+    SetHevCycle { duration_s: u32 },
     #[packet_number(145)]
     GetHevCycleConfiguration,
     #[packet_number(146)]
-    SetHevCycleConfiguration {
-        indication: u8,
-        duration_s: u32,
-    },
+    SetHevCycleConfiguration { indication: u8, duration_s: u32 },
     #[packet_number(148)]
     GetLastHevCycleResult,
+
+    #[packet_number(305)]
+    SetAccessPoint {
+        interface: u8, // 1 for access point, 2 for station
+
+        #[cfg(feature = "no-std")]
+        ssid: String<32>,
+        #[cfg(feature = "no-std")]
+        password: String<64>,
+
+        #[cfg(not(feature = "no-std"))]
+        #[size(32)]
+        ssid: String,
+        #[cfg(not(feature = "no-std"))]
+        #[size(64)]
+        password: String,
+
+        protocol: u8, // docs below
+    },
 }
+
+// enum INTERFACE : byte
+// {
+//   SOFT_AP = 1, // i.e. act as an access point
+//   STATION = 2  // i.e. connect to an existing access point
+// }
+
+// enum SECURITY_PROTOCOL : byte
+// {
+//    OPEN           = 1,
+//    WEP_PSK        = 2, // Not officially supported
+//    WPA_TKIP_PSK   = 3,
+//    WPA_AES_PSK    = 4,
+//    WPA2_AES_PSK   = 5,
+//    WPA2_TKIP_PSK  = 6,
+//    WPA2_MIXED_PSK = 7
+// }
 
 pub enum WifiSignalQuality {
     High,
