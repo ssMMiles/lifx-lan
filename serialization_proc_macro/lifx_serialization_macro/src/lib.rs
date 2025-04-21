@@ -127,7 +127,7 @@ pub fn from_bytes_derive(input: TokenStream) -> TokenStream {
 
 fn generate_field_code(field: &syn::Field, variant_current_size: usize) -> (proc_macro2::TokenStream, proc_macro2::TokenStream, usize) {
     let field_name = field.ident.as_ref().unwrap();
-    let mut field_size: usize = 0;
+    let mut field_size: usize = 32;
     let field_serialization: proc_macro2::TokenStream;
     let field_deserialization: proc_macro2::TokenStream;
 
